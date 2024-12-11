@@ -129,6 +129,9 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
+import { Dimensions } from 'react-native';
+const screenHeight = Dimensions.get('window').height;
+
 export default function AboutScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -217,6 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    height: 0.3 * screenHeight, 
     height: 200,
     borderRadius: 20,
   },

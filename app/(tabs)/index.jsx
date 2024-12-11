@@ -3,20 +3,20 @@ import React from 'react';
 import { Colors } from "@/constants/Colors"; 
 import { useNavigation } from 'expo-router'; 
 
-import { useAuth } from '@clerk/clerk-expo'; 
+import { useClerk, useUser } from '@clerk/clerk-expo';
 
 export default function index() {
   const navigation = useNavigation();
-  const { signOut } = useAuth();
+  const { signOut } = useClerk();
 
-  const handleLogout = async () => {
+  const handleSignout = async () => {
     try {
-      await signOut(); 
-      navigation.navigate('login'); 
+      await signOut();
+      navigation.replace("index");
     } catch (error) {
-      console.error("Error logging out:", error);
+      console.log("signout error");
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -47,7 +47,7 @@ export default function index() {
 
       <TouchableOpacity 
         style={[styles.btn, styles.logoutBtn]} 
-        onPress={handleLogout}
+        onPress={handleSignout}
       >
         <Text style={styles.btnText}>Logout</Text>
       </TouchableOpacity>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   heroImage: {
     width: '100%',
-    height: 500,
+    height: '40%',
     borderRadius: 20,
     // marginVertical: 20,
     marginBottom: 50,

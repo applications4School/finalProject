@@ -3,7 +3,7 @@ import { Stack, Redirect } from "expo-router";
 import { Colors } from '@/constants/Colors';
 
 export default function AuthroutesLayout() {
-  const { isSignedIn, isSignedUp } = useAuth(); // Fix here
+  const { isSignedIn, isSignedUp } = useAuth(); 
 
   // Redirect if user is signed in or signed up
   if (isSignedIn || isSignedUp) {

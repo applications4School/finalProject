@@ -4,6 +4,7 @@ import { Button } from 'react-native-paper';
 import { Colors } from "@/constants/Colors";
 import { useClerk, useUser } from '@clerk/clerk-expo';
 import { useNavigation } from 'expo-router';
+
 // import { createNote, readNote, updateNote, deleteNote } from '../../firebaseMethods'; // Assuming these methods are already set up
 
 // export default function MyNotes() {
@@ -153,7 +154,10 @@ export default function MyNotes() {
   const [editingNote, setEditingNote] = useState(null);
   const [newTitle, setNewTitle] = useState('');
   const [newContent, setNewContent] = useState('');
+  const { user } = useUser();
+  // const { signOut } = useClerk();
 
+ 
 // Add a default note if nothing is there 
     const fetchNotes = () => {
       if (notes.length === 0) {
@@ -175,13 +179,19 @@ export default function MyNotes() {
 
   // Save the updated note
   const handleSaveNote = () => {
+
+    // This is logic for if there is no content in either title and content
     if (!newTitle.trim() || !newContent.trim()) {
       Alert.alert("Error", "Both title and content are required!");
       return;
     }
 
     const updatedNotes = notes.map((note) =>
+
+      // Map the notes from the updated notes to the old note id...
       note.id === editingNote.id
+
+      // ...Note copies all properties (title, content) and passes it into a note object
         ? { ...note, title: newTitle, content: newContent }
         : note
     );
@@ -229,7 +239,10 @@ export default function MyNotes() {
         style={styles.profileImage}
       />
 
-      <Text style={styles.notesHeading}>Your Notes</Text>
+    <Text style = {styles.notesHeading}>
+      {user.primaryEmailAddress?.emailAddress || 'email@example.com'}
+      
+    </Text>
 
       {editingNote ? (
         <View style={styles.editNoteContainer}>
@@ -308,6 +321,16 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingHorizontal: 20,
   },
+
+  addNoteContainer: {
+    backgroundColor: Colors.CODE_WHITE,
+    borderWidth: 1,
+    borderColor: Colors.CODE_PINK,
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 5,
+    width: '50%',
+  },
   profileImage: {
     width: 150,
     height: 150,
@@ -323,22 +346,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
   },
-  btn: {
-    backgroundColor: Colors.CODE_PINK,
-    padding: 10,
-    borderRadius: 50,
-    width: 200,
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  btnText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
+
   notesHeading: {
-    fontSize: 20,
-    color: "#ffffff",
+    fontSize: 25,
+    color: Colors.CODE_WHITE,
     fontWeight: "bold",
     marginVertical: 20,
   },
@@ -369,7 +380,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: Colors.CODE_WHTIE,
+    borderColor: Colors.CODE_WHITE,
     borderRadius: 5,
     padding: 10,
     marginVertical: 10,
